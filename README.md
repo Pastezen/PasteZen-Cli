@@ -4,10 +4,9 @@ Command-line interface for [Pastezen](https://pastezen.com) - secure code sharin
 
 ## Installation
 
-### Via Homebrew (recommended)
+### Quick Install (recommended)
 ```bash
-brew tap pastezen/tap
-brew install pastezen
+curl -fsSL https://backend.pastezen.com/install.sh | bash
 ```
 
 ### Via npm
@@ -17,8 +16,8 @@ npm install -g pastezen-cli
 
 ### From source
 ```bash
-git clone https://github.com/pastezen/cli
-cd cli
+git clone https://github.com/Pastezen/PasteZen-Cli.git
+cd PasteZen-Cli
 npm install
 npm link
 ```
@@ -35,8 +34,8 @@ pz push myfile.js
 # List your pastes
 pz list
 
-# Create a secret project
-pz secrets create "Production Env"
+# Create a Pastebox
+pz pastebox create mybox
 ```
 
 ## Commands
@@ -67,6 +66,31 @@ pz list                            # List your pastes
 pz view <paste-id>                 # View content
 pz pull <paste-id>                 # Download files
 pz delete <paste-id>               # Delete paste
+```
+
+### Pasteboxes (Isolated Environments)
+
+```bash
+# Create and manage
+pz pastebox create <name>                    # Create new Pastebox
+pz pastebox create <name> --ssh-auth both    # With SSH key + password
+pz pastebox list                             # List your Pasteboxes
+pz pastebox inspect <id>                     # Show details
+pz pastebox delete <id>                      # Delete Pastebox
+
+# SSH Access
+pz pastebox ssh <id>                         # Connect via SSH
+pz pastebox ssh-info <id>                    # Show SSH details
+
+# File Operations
+pz pastebox files <id>                       # List files
+pz pastebox upload <id> local.txt /remote/   # Upload file
+pz pastebox download <id> /remote/file.txt . # Download file
+
+# Secrets
+pz pastebox secrets <id> --list              # List injected secrets
+pz pastebox secrets <id> --set API_KEY=xxx   # Inject a secret
+pz pastebox secrets <id> --env-file .env     # Import from .env
 ```
 
 ### Secrets Management
@@ -125,6 +149,21 @@ echo 'console.log("Hello!")' | pz push -
 pz push src/*.js --title "Source files"
 ```
 
+### Pastebox workflow
+```bash
+# Create an isolated environment
+pz pastebox create dev-env --ssh-auth password
+
+# Upload your project
+pz pastebox upload abc123 ./src/ /app/src/ --recursive
+
+# Inject secrets
+pz pastebox secrets abc123 --env-file .env.production
+
+# Connect and run
+pz pastebox ssh abc123
+```
+
 ### Secrets workflow
 ```bash
 # Create a project for your app
@@ -133,19 +172,9 @@ pz secrets create "MyApp Production"
 # Add secrets
 pz secrets set abc123 DATABASE_URL=postgres://...
 pz secrets set abc123 API_KEY=sk_live_xxx
-pz secrets set abc123 SECRET_KEY=super_secret
 
 # Export for deployment
 pz secrets export abc123 -o .env
-```
-
-### Password-protected sharing
-```bash
-# Create protected paste
-pz push sensitive.txt --private --password
-
-# View with password
-pz view abc123 --password mysecret
 ```
 
 ## License
