@@ -1,0 +1,39 @@
+{
+    "name": "pastezen-cli",
+    "version": "1.0.0",
+    "description": "CLI for Pastezen - secure code sharing platform",
+    "author": "Pastezen",
+    "license": "MIT",
+    "bin": {
+        "pz": "./bin/pz.js"
+    },
+    "main": "src/index.js",
+    "files": [
+        "bin",
+        "src"
+    ],
+    "keywords": [
+        "pastezen",
+        "pastebin",
+        "cli",
+        "code-sharing",
+        "secrets",
+        "encryption"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pastezen/cli"
+    },
+    "homepage": "https://pastezen.com",
+    "dependencies": {
+        "axios": "^1.6.0",
+        "chalk": "^4.1.2",
+        "commander": "^11.1.0",
+        "crypto-js": "^4.2.0",
+        "inquirer": "^8.2.6",
+        "ora": "^5.4.1"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    }
+}
